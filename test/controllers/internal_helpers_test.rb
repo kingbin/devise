@@ -89,26 +89,26 @@ class HelpersTest < ActionController::TestCase
 
   test 'does not issue blank flash messages' do
     I18n.stubs(:t).returns('   ')
-    @controller.send :set_flash_message, :notice, :send_instructions
+    @controller.send :set_flash_message, :info, :send_instructions
     assert flash[:notice].nil?
   end
 
   test 'issues non-blank flash messages normally' do
     I18n.stubs(:t).returns('non-blank')
-    @controller.send :set_flash_message, :notice, :send_instructions
+    @controller.send :set_flash_message, :info, :send_instructions
     assert_equal 'non-blank', flash[:notice]
   end
 
   test 'uses custom i18n options' do
     @controller.stubs(:devise_i18n_options).returns(default: "devise custom options")
-    @controller.send :set_flash_message, :notice, :invalid_i18n_messagesend_instructions
+    @controller.send :set_flash_message, :info, :invalid_i18n_messagesend_instructions
     assert_equal 'devise custom options', flash[:notice]
   end
 
   test 'allows custom i18n options to override resource_name' do
     I18n.expects(:t).with("custom_resource_name.confirmed", anything)
     @controller.stubs(:devise_i18n_options).returns(resource_name: "custom_resource_name")
-    @controller.send :set_flash_message, :notice, :confirmed
+    @controller.send :set_flash_message, :info, :confirmed
   end
 
   test 'navigational_formats not returning a wild card' do

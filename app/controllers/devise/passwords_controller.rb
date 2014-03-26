@@ -34,7 +34,7 @@ class Devise::PasswordsController < DeviseController
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
       flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
-      set_flash_message(:notice, flash_message) if is_flashing_format?
+      set_flash_message(:info, flash_message) if is_flashing_format?
       sign_in(resource_name, resource)
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
@@ -55,7 +55,7 @@ class Devise::PasswordsController < DeviseController
     # Check if a reset_password_token is provided in the request
     def assert_reset_token_passed
       if params[:reset_password_token].blank?
-        set_flash_message(:alert, :no_token)
+        set_flash_message(:danger, :no_token)
         redirect_to new_session_path(resource_name)
       end
     end
