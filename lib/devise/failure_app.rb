@@ -49,17 +49,17 @@ module Devise
 
     def recall
       env["PATH_INFO"]  = attempted_path
-      flash.now[:alert] = i18n_message(:invalid)
+      flash.now[:danger] = i18n_message(:invalid)
       self.response = recall_app(warden_options[:recall]).call(env)
     end
 
     def redirect
       store_location!
-      if flash[:timedout] && flash[:alert]
+      if flash[:timedout] && flash[:danger]
         flash.keep(:timedout)
-        flash.keep(:alert)
+        flash.keep(:danger)
       else
-        flash[:alert] = i18n_message
+        flash[:danger] = i18n_message
       end
       redirect_to redirect_url
     end

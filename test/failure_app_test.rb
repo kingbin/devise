@@ -38,7 +38,7 @@ class FailureTest < ActiveSupport::TestCase
     test 'returns to the default redirect location' do
       call_failure
       assert_equal 302, @response.first
-      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:danger]
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
@@ -52,7 +52,7 @@ class FailureTest < ActiveSupport::TestCase
       swap Devise, router_name: :fake_app do
         call_failure app: RootFailureApp
         assert_equal 302, @response.first
-        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:danger]
         assert_equal 'http://test.host/', @response.second['Location']
       end
     end
@@ -69,18 +69,18 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'uses the proxy failure message as symbol' do
       call_failure('warden' => OpenStruct.new(message: :invalid))
-      assert_equal 'Invalid email or password.', @request.flash[:alert]
+      assert_equal 'Invalid email or password.', @request.flash[:danger]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
     test 'uses custom i18n options' do
       call_failure('warden' => OpenStruct.new(message: :does_not_exist), app: FailureWithI18nOptions)
-      assert_equal 'User Steve does not exist', @request.flash[:alert]
+      assert_equal 'User Steve does not exist', @request.flash[:danger]
     end
 
     test 'uses the proxy failure message as string' do
       call_failure('warden' => OpenStruct.new(message: 'Hello world'))
-      assert_equal 'Hello world', @request.flash[:alert]
+      assert_equal 'Hello world', @request.flash[:danger]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
